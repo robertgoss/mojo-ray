@@ -1,5 +1,5 @@
 # Based on https://raytracing.github.io
-from vec3 import Vec3, Point3
+from vec3 import Vec3, Point3, unit_vector
 from colour import Colour, write_colour
 from ray import Ray
 
@@ -14,7 +14,9 @@ fn to_float(int : Int16) -> Float64:
     return int.cast[DType.float64]()
 
 fn ray_colour(ray : Ray) -> Colour:
-    return Colour(0,0,0)
+    var unit_direction = unit_vector(ray.direction)
+    var a = 0.5*(unit_direction.y + 1.0)
+    return (1.0-a)*Colour(1.0, 1.0, 1.0) + a*Colour(0.5, 0.7, 1.0)
 
 fn main() raises:
     # Get image size
