@@ -65,3 +65,6 @@ fn cross(u : Vec3, v : Vec3) -> Vec3:
 
 fn unit_vector(v : Vec3) -> Vec3:
     return v / v.length()
+
+alias Point3 = Vec3
+alias UnitVec3 = Vec3

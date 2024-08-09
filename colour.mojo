@@ -1,6 +1,8 @@
 from vec3 import Vec3
 
-fn write_colour(inout file : FileHandle, colour : Vec3) raises:    
+alias Colour = Vec3
+
+fn write_colour(inout file : FileHandle, colour : Colour) raises:    
     alias space = StringRef(" ")
     alias newline = StringRef("\n")
     var ir : UInt8 = int(255.999 * colour.x)
