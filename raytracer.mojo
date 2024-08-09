@@ -22,7 +22,7 @@ fn main() raises:
     # Get image size
     var image_width : Int16 = 400
     var aspect_ratio : Float64 = 16.0 / 9.0
-    var image_height : Int16 = max(1, int(image_width / aspect_ratio))
+    var image_height : Int16 = max(1, int(to_float(image_width) / aspect_ratio))
 
     # Camera size
     var focal_length = 1.0
