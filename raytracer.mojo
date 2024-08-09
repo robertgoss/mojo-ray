@@ -1,5 +1,55 @@
+# Based on https://raytracing.github.io
+import math
 
+@value
+struct Vec3:
+    var x : Float64
+    var y : Float64
+    var z : Float64
 
+    fn __add__(self : Self, rhs : Self) -> Self:
+        return Vec3(self.x + rhs.x, self.y + rhs.y, self.z + rhs.z)
+
+    fn __iadd__(inout self : Self, rhs : Self):
+        self.x += rhs.x
+        self.y += rhs.y
+        self.z += rhs.z
+
+    fn __sub__(self : Self, rhs : Self) -> Self:
+        return Vec3(self.x - rhs.x, self.y - rhs.y, self.z - rhs.z)
+
+    fn __isub__(inout self : Self, rhs : Self):
+        self.x -= rhs.x
+        self.y -= rhs.y
+        self.z -= rhs.z
+
+    fn __rmul__(self : Self, lhs : Float64) -> Self:
+        return Vec3(self.x * lhs, self.y * lhs, self.z * lhs)
+
+    fn __mul__(self : Self, lhs : Float64) -> Self:
+        return Vec3(self.x * lhs, self.y * lhs, self.z * lhs)
+
+    fn __imul__(inout self : Self, rhs : Float64):
+        self.x *= rhs
+        self.y *= rhs
+        self.z *= rhs
+    
+    fn __rdiv__(self : Self, lhs : Float64) -> Self:
+        return Vec3(self.x / lhs, self.y / lhs, self.z / lhs)
+
+    fn __div__(self : Self, lhs : Float64) -> Self:
+        return Vec3(self.x / lhs, self.y / lhs, self.z / lhs)
+
+    fn __idiv__(inout self : Self, rhs : Float64):
+        self.x /= rhs
+        self.y /= rhs
+        self.z /= rhs
+
+    fn length(self : Self) -> Float64:
+        return math.sqrt(self.length_squared())
+
+    fn length_squared(self : Self) -> Float64:
+        return (self.x*self.x) + (self.y*self.y) + (self.z*self.z)
 
 fn main():
     var image_width : Int16 = 256
@@ -16,6 +66,7 @@ fn main():
             image.write(str(image_height))
             image.write(StringRef("\n255\n"))
             for j in range(image_height):
+                print("\rScanlines remaining: ", image_height-j)
                 for i in range(image_width):
                     var r : Float64 = Int16(i).cast[DType.float64]() / image_scale_width
                     var g : Float64 = Int16(j).cast[DType.float64]() / image_scale_height
@@ -30,6 +81,7 @@ fn main():
                     image.write(space)
                     image.write(str(ib))
                     image.write(newline)
+        print("\rDone                                       ")
 
     except:
         print("Could not write file")
