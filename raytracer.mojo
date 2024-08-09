@@ -1,7 +1,9 @@
 # Based on https://raytracing.github.io
-from vec3 import Vec3, Point3, unit_vector
+from vec3 import Vec3, Point3, unit_vector, dot
 from colour import Colour, write_colour
 from ray import Ray
+
+import math
 
 fn write_ppm_header(inout file : FileHandle, width : Int16, height : Int16) raises:
     file.write(StringRef("P3\n"))
@@ -13,7 +15,21 @@ fn write_ppm_header(inout file : FileHandle, width : Int16, height : Int16) rais
 fn to_float(int : Int16) -> Float64:
     return int.cast[DType.float64]()
 
+fn hit_sphere(center : Point3, radius : Float64, ray : Ray) -> Float64:
+    var oc = center - ray.origin
+    var a = ray.direction.length_squared()
+    var h = dot(ray.direction, oc)
+    var c = oc.length_squared() - radius*radius
+    var discriminant = h*h - a*c
+    if discriminant < 0:
+        return -1
+    return (h - math.sqrt(discriminant)) / a
+
 fn ray_colour(ray : Ray) -> Colour:
+    var t = hit_sphere(Point3(0,0,-1), 0.5, ray)
+    if (t > 0.0):
+        var N = unit_vector(ray.at(t) - Vec3(0,0,-1))
+        return 0.5*Colour(N.x+1, N.y+1, N.z+1)
     var unit_direction = unit_vector(ray.direction)
     var a = 0.5*(unit_direction.y + 1.0)
     return (1.0-a)*Colour(1.0, 1.0, 1.0) + a*Colour(0.5, 0.7, 1.0)
