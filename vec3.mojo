@@ -22,6 +22,9 @@ struct Vec3:
         self.y -= rhs.y
         self.z -= rhs.z
 
+    fn __neg__(self : Self) -> Self:
+        return Vec3(-self.x, -self.y, -self.z)
+
     fn __rmul__(self : Self, lhs : Float64) -> Self:
         return Vec3(self.x * lhs, self.y * lhs, self.z * lhs)
 
